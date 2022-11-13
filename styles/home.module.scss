@@ -1,5 +1,4 @@
 .door {
-  position: relative;
   width: var(--door-width);
   height: var(--door-height);
   transform: scale(0.3);
@@ -7,6 +6,8 @@
 }
 
 .door {
+  position: relative;
+
   &__top,
   &__left,
   &__right,
