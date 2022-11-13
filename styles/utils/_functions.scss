@@ -1,0 +1,7 @@
+@function color($color-name) {
+  @return var(--color-#{$color-name});
+}
+
+@mixin shadow($shadow-name) {
+  filter: var(--md-sys-shadow-#{$shadow-name});
+}

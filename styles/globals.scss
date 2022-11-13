@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './utils/_functions.scss';
+// @import './base/_colors.scss';
+// @import './base/_shadows.scss';
+@import './base/_variables.scss';
+@import './base/_setup.scss';
+@import './base/_image.scss';

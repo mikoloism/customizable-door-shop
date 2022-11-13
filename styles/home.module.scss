@@ -1,0 +1,111 @@
+.door {
+  position: relative;
+  width: var(--door-width);
+  height: var(--door-height);
+  transform: scale(0.3);
+  background: red;
+}
+
+.door {
+  &__top,
+  &__left,
+  &__right,
+  &__bottom {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+
+    &::before {
+      background-image: url('/H_Q_8569.png');
+    }
+  }
+
+  &__top,
+  &__left,
+  &__bottom,
+  &__right,
+  &__middle {
+    &::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-size: 100% 100%;
+      background-repeat: round;
+    }
+  }
+
+  &__top {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      calc(var(--door-width) - 100mm) 100%,
+      100mm 100%
+    );
+    top: 0;
+    height: 100mm;
+  }
+
+  &__bottom {
+    clip-path: polygon(
+      0 100%,
+      100mm 0,
+      calc(var(--door-width) - 100mm) 0,
+      100% 100%
+    );
+    bottom: 0;
+    height: 100mm;
+
+    &::before {
+      transform: rotateZ(-180deg);
+    }
+  }
+
+  &__left {
+    clip-path: polygon(
+      0 0,
+      100% 100mm,
+      100% calc(var(--door-height) - 100mm),
+      0 100%
+    );
+    left: 0;
+    width: 100mm;
+
+    &::before {
+      width: var(--door-height);
+      transform: rotateZ(-90deg);
+    }
+  }
+
+  &__right {
+    clip-path: polygon(
+      100% 0,
+      100% 100%,
+      0 calc(var(--door-height) - 100mm),
+      0 100mm
+    );
+    right: 0;
+    width: 100mm;
+
+    &::before {
+      width: var(--door-height);
+      transform: rotateZ(90deg);
+    }
+  }
+
+  &__middle {
+    width: var(--door-width);
+
+    &::before {
+      position: absolute;
+      width: calc(var(--door-width) - 200mm);
+      height: calc(var(--door-height) - 200mm);
+      top: 100mm;
+      bottom: -100mm;
+      left: 100mm;
+      right: -100mm;
+      background-image: url('/H_Q_8290.png');
+    }
+  }
+}

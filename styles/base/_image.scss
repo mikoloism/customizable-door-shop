@@ -1,0 +1,31 @@
+/* fix the `next/image` component styling */
+.next-image > span {
+  position: initial !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 4;
+}
+
+.next-image.cover::before {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  width: 160px;
+  height: 190px;
+  top: 40px;
+  right: 150px;
+  z-index: 2;
+}
+
+.next-image.cover::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  bottom: 50px;
+  left: 250px;
+  z-index: 3;
+  border-radius: 90rem;
+  // background-color: theme('colors.img.circle');
+}

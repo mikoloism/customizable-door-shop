@@ -1,0 +1,43 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root,
+#__next {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  place-items: center;
+  place-content: center;
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  overflow-x: hidden;
+  // color: color(primary);
+  // background: color(background);
+  color: black;
+  background: white;
+  font-family: 'Roboto', sans-serif;
+  @apply space-x-0;
+  @apply space-y-0;
+}
+
+html,
+body {
+  overflow: auto;
+}
+
+#root,
+#__next {
+  flex-direction: row;
+  max-height: 100vh;
+  place-content: flex-start;
+  scroll-behavior: smooth;
+}
