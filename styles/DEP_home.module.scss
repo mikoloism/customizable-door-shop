@@ -1,0 +1,129 @@
+.door {
+  width: var(--door-width);
+  height: var(--door-height);
+  transform: scale(0.3);
+  background: red;
+}
+
+.door {
+  position: relative;
+
+  &__top,
+  &__left,
+  &__right,
+  &__bottom {
+    display: block;
+    position: absolute;
+
+    &::before {
+      background-image: url('/H_Q_8569.png');
+    }
+  }
+
+  &__top,
+  &__left,
+  &__bottom,
+  &__right,
+  &__middle {
+    &::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__top {
+    top: 0;
+    width: 100%;
+    height: var(--profile-size);
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      calc(var(--door-width) - var(--profile-size)) 100%,
+      var(--profile-size) 100%
+    );
+
+    &::before {
+      width: 100%;
+      height: 100%;
+      background-size: auto 100%;
+    }
+  }
+
+  &__left {
+    left: 0;
+    width: var(--profile-size);
+    height: 100%;
+    clip-path: polygon(
+      0 0,
+      100% var(--profile-size),
+      100% calc(var(--door-height) - var(--profile-size)),
+      0 100%
+    );
+
+    &::before {
+      width: var(--door-height);
+      height: var(--profile-size);
+      background-size: auto 100%;
+      transform-origin: 0 0;
+      transform: rotateZ(-90deg) translate(0, var(--door-height));
+    }
+  }
+
+  &__right {
+    right: 0;
+    width: var(--profile-size);
+    height: 100%;
+    clip-path: polygon(
+      100% 0,
+      100% 100%,
+      0 calc(var(--door-height) - var(--profile-size)),
+      0 var(--profile-size)
+    );
+
+    &::before {
+      width: var(--door-height);
+      height: var(--profile-size);
+      background-size: auto 100%;
+      transform-origin: 0 0;
+      transform: rotateZ(90deg) translate(var(--profile-size), 0);
+    }
+  }
+
+  &__bottom {
+    bottom: 0;
+    width: 100%;
+    height: var(--profile-size);
+    clip-path: polygon(
+      0 100%,
+      var(--profile-size) 0,
+      calc(var(--door-width) - var(--profile-size)) 0,
+      100% 100%
+    );
+
+    &::before {
+      width: 100%;
+      height: 100%;
+      background-size: auto 100%;
+      transform: rotateZ(180deg);
+    }
+  }
+
+  &__middle {
+    width: var(--door-width);
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    &::before {
+      position: absolute;
+      width: calc(var(--door-width) - (var(--profile-size) * 2));
+      height: calc(var(--door-height) - (var(--profile-size) * 2));
+      top: var(--profile-size);
+      left: var(--profile-size);
+      background-size: 100% 100%;
+      background-image: url('/H_Q_8290.png');
+    }
+  }
+}

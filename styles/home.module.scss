@@ -1,112 +1,134 @@
-.door {
-  width: var(--door-width);
-  height: var(--door-height);
-  transform: scale(0.3);
-  background: red;
+.container {
+  padding: 16px;
 }
 
-.door {
-  position: relative;
-
-  &__top,
-  &__left,
-  &__right,
-  &__bottom {
+.template {
+  & {
+    display: grid;
+    grid-template-rows: 48px 1fr;
+    grid-template-columns: 1fr 48px;
     width: 100%;
     height: 100%;
-    display: block;
+    position: relative;
+  }
+
+  &__dimension {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    &--top {
+      grid-row: 1 / 2;
+      grid-column: 1 / 2;
+      flex-direction: row;
+    }
+
+    &--right {
+      grid-row: 2 / 3;
+      grid-column: 2 / 3;
+      flex-direction: column;
+    }
+  }
+
+  &__door {
+    grid-row: 2 / 3;
+    grid-column: 1 / 2;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+.dimension {
+  &_top {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    place-content: center;
+    place-items: center;
+
+    &__marker {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      place-content: center;
+      place-items: center;
+
+      &:first-of-type {
+        margin-right: -30px;
+      }
+
+      &:last-of-type {
+        margin-left: -30px;
+      }
+    }
+
+    &__line {
+      width: calc(100% - 40px);
+      height: 4px;
+      place-self: center;
+      background: black;
+    }
+  }
+
+  &_right {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    place-content: center;
+    place-items: center;
+
+    &__marker {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      place-content: center;
+      place-items: center;
+
+      &:first-of-type {
+        margin-bottom: -30px;
+      }
+
+      &:last-of-type {
+        margin-top: -32px;
+      }
+    }
+
+    &__line {
+      width: 4px;
+      height: calc(100% - 35px);
+      place-self: center;
+      background: black;
+    }
+  }
+}
+
+.line {
+  position: relative;
+
+  &__input {
     position: absolute;
-
-    &::before {
-      background-image: url('/H_Q_8569.png');
-    }
+    width: 200px;
+    height: 32px;
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 4px 8px;
   }
 
-  &__top,
-  &__left,
-  &__bottom,
-  &__right,
-  &__middle {
-    &::before {
-      content: '';
-      display: block;
-      width: 100%;
-      height: 100%;
-      background-size: 100% 100%;
-      background-repeat: round;
-    }
+  &--top &__input {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
-  &__top {
-    clip-path: polygon(
-      0 0,
-      100% 0,
-      calc(var(--door-width) - 100mm) 100%,
-      100mm 100%
-    );
-    top: 0;
-    height: 100mm;
-  }
-
-  &__bottom {
-    clip-path: polygon(
-      0 100%,
-      100mm 0,
-      calc(var(--door-width) - 100mm) 0,
-      100% 100%
-    );
-    bottom: 0;
-    height: 100mm;
-
-    &::before {
-      transform: rotateZ(-180deg);
-    }
-  }
-
-  &__left {
-    clip-path: polygon(
-      0 0,
-      100% 100mm,
-      100% calc(var(--door-height) - 100mm),
-      0 100%
-    );
-    left: 0;
-    width: 100mm;
-
-    &::before {
-      width: var(--door-height);
-      transform: rotateZ(-90deg);
-    }
-  }
-
-  &__right {
-    clip-path: polygon(
-      100% 0,
-      100% 100%,
-      0 calc(var(--door-height) - 100mm),
-      0 100mm
-    );
-    right: 0;
-    width: 100mm;
-
-    &::before {
-      width: var(--door-height);
-      transform: rotateZ(90deg);
-    }
-  }
-
-  &__middle {
-    width: var(--door-width);
-
-    &::before {
-      position: absolute;
-      width: calc(var(--door-width) - 200mm);
-      height: calc(var(--door-height) - 200mm);
-      top: 100mm;
-      bottom: -100mm;
-      left: 100mm;
-      right: -100mm;
-      background-image: url('/H_Q_8290.png');
-    }
+  &--right &__input {
+    top: 50%;
+    left: 50%;
+    transform-origin: top left;
+    transform: rotateZ(-90deg) translate(-50%, -50%);
   }
 }
