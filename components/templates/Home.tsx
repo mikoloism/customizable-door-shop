@@ -40,13 +40,7 @@ export function HomeTemplate() {
                         ref={gridRef}>
                         <DimensionTop />
                         <DimensionRight />
-                        <div
-                            className={classNames('bg-black w-full h-full')}
-                            style={{
-                                gridRow: '2 / 3',
-                                gridColumn: '1 / 2',
-                            }}></div>
-                        {/* <FrameTemplate1 /> */}
+                        <FrameTemplate1 />
                     </div>
                 </div>
             </div>
@@ -203,7 +197,7 @@ function withContextProxy(
             props.containerRef.current!.getBoundingClientRect();
         const { width, height } = newState;
 
-        console.log({ width, height });
+        if (width <= 200 || height <= 200) return;
 
         if (
             (containerHeight - DIMENSION_SIZE - PADDING_SIZE) / height <
@@ -218,6 +212,22 @@ function withContextProxy(
             props.gridRef.current!.style.height = `${
                 currentHeight + DIMENSION_SIZE
             }px`;
+            document.documentElement.style.setProperty(
+                '--door-width',
+                `${width}px`
+            );
+            document.documentElement.style.setProperty(
+                '--door-height',
+                `${height}px`
+            );
+
+            let doorScaleHeight = currentHeight / height;
+            let doorScaleWidth = currentWidth / width;
+            let doorScale = (doorScaleWidth + doorScaleHeight) / 2;
+            document.documentElement.style.setProperty(
+                '--door-scale',
+                doorScale.toString()
+            );
 
             return setContext(() => ({ ...context, width, height }));
         }
@@ -231,6 +241,21 @@ function withContextProxy(
         props.gridRef.current!.style.height = `${
             currentHeight + DIMENSION_SIZE
         }px`;
+        document.documentElement.style.setProperty(
+            '--door-width',
+            `${width}px`
+        );
+        document.documentElement.style.setProperty(
+            '--door-height',
+            `${height}px`
+        );
+        let doorScaleHeight = currentHeight / height;
+        let doorScaleWidth = currentWidth / width;
+        let doorScale = (doorScaleWidth + doorScaleHeight) / 2;
+        document.documentElement.style.setProperty(
+            '--door-scale',
+            doorScale.toString()
+        );
 
         return setContext(() => ({ ...context, width, height }));
     };
