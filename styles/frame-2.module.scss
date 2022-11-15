@@ -1,0 +1,151 @@
+.frame {
+  position: relative;
+}
+
+//@outside
+.frame-outside {
+  & {
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+    width: calc(
+      var(--inside-frame-width) +
+        (var(--outside-frame-left-width) + (var(--outside-frame-right-width)))
+    );
+    height: calc(var(--inside-frame-height) + (var(--outside-frame-top-width)));
+
+    display: grid;
+    grid-template-rows:
+      var(--outside-frame-top-width)
+      var(--inside-frame-height);
+    grid-template-columns:
+      var(--outside-frame-left-width) var(--inside-frame-width)
+      var(--outside-frame-right-width);
+  }
+
+  &__top {
+    grid-row: 1 / 2;
+    grid-column: 1 / 4;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 48px) 48px, 48px 48px);
+  }
+
+  &__left {
+    grid-row: 1 / 3;
+    grid-column: 1 / 2;
+    clip-path: polygon(0 0, 100% 48px, 100% 100%, 0 100%);
+  }
+
+  &__right {
+    grid-row: 1 / 3;
+    grid-column: 3 / 4;
+    clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 48px);
+  }
+
+  &__top,
+  &__left,
+  &__right {
+    background-repeat: round;
+    background-size: revert;
+    background-image: url('/H_Q_8290.png');
+  }
+
+  &__inside {
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+  }
+}
+
+//@inside
+.frame-inside {
+  & {
+    display: grid;
+    grid-template-rows: var(--inside-frame-profile-width) auto var(
+        --inside-frame-profile-width
+      );
+    grid-template-columns: var(--inside-frame-profile-width) auto var(
+        --inside-frame-profile-width
+      );
+    width: 100%;
+    height: 100%;
+    transform-origin: center center;
+    transform: scale(var(--frame-scale));
+  }
+
+  &__top,
+  &__left,
+  &__right,
+  &__bottom {
+    width: 100%;
+    height: 100%;
+    background-repeat: round;
+    background-size: revert;
+    background-image: url('/H_Q_8569.png');
+  }
+
+  &__left,
+  &__right {
+    width: var(--inside-frame-height);
+    height: var(--inside-frame-profile-width);
+    transform-origin: 0 0;
+    grid-row: 1 / 4;
+  }
+
+  &__top,
+  &__bottom {
+    grid-column: 1 / 4;
+  }
+
+  &__top {
+    grid-row: 1 / 2;
+    clip-path: polygon(
+      calc(var(--inside-frame-profile-width) - var(--inside-frame-tool-width)) 0,
+      calc(
+          100% -
+            (var(--inside-frame-profile-width) - var(--inside-frame-tool-width))
+        )
+        0,
+      calc(
+          100% -
+            (var(--inside-frame-profile-width) - var(--inside-frame-tool-width))
+        )
+        calc(var(--inside-frame-profile-width) - var(--inside-frame-tool-width)),
+      calc(100% - var(--inside-frame-profile-width)) 100%,
+      var(--inside-frame-profile-width) 100%,
+      calc(var(--inside-frame-profile-width) - var(--inside-frame-tool-width))
+        calc(100% - var(--inside-frame-tool-width))
+    );
+  }
+
+  &__left {
+    grid-column: 1 / 2;
+    transform: translate(0, var(--inside-frame-height)) rotateZ(-90deg);
+  }
+
+  &__right {
+    grid-column: 3 / 4;
+    transform: translate(var(--inside-frame-profile-width, 0)) rotateZ(90deg);
+  }
+
+  &__bottom {
+    grid-row: 3 / 4;
+    clip-path: polygon(
+      calc(var(--profile-width) - var(--profile-tool-width)) 100%,
+      calc(100% - (var(--profile-width) - var(--profile-tool-width))) 100%,
+      calc(100% - (var(--profile-width) - var(--profile-tool-width)))
+        calc(100% - (var(--profile-width) - var(--profile-tool-width))),
+      calc(100% - var(--profile-width)) 0,
+      var(--profile-width) 0,
+      calc(var(--profile-width) - var(--profile-tool-width))
+        var(--profile-tool-width)
+    );
+  }
+
+  &__middle {
+    position: absolute;
+    top: var(--inside-frame-profile-width);
+    left: var(--inside-frame-profile-width);
+    width: calc(100% - (var(--inside-frame-profile-width) * 2));
+    height: calc(100% - (var(--inside-frame-profile-width) * 2));
+    background-image: url('/H_Q_8290.png');
+    background-size: 100% 100%;
+  }
+}

@@ -1,12 +1,18 @@
 .container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  place-content: center;
+  place-items: center;
   padding: 16px;
+  overflow: hidden;
 }
 
-.template {
+.board {
   & {
     display: grid;
-    grid-template-rows: 48px 1fr;
-    grid-template-columns: 1fr 48px;
+    grid-template-rows: 48px 1fr 48px;
+    grid-template-columns: 48px 1fr 48px;
     width: calc(var(--door-width) + 48px + 32px);
     height: calc(var(--door-height) + 48px + 32px);
     position: relative;
@@ -21,112 +27,162 @@
 
     &--top {
       grid-row: 1 / 2;
-      grid-column: 1 / 2;
+      grid-column: 2 / 3;
       flex-direction: row;
     }
 
     &--right {
       grid-row: 2 / 3;
-      grid-column: 2 / 3;
+      grid-column: 3 / 4;
       flex-direction: column;
+    }
+
+    &--left {
+      grid-row: 2 / 3;
+      grid-column: 1 / 2;
+      flex-direction: column;
+    }
+
+    &--bottom {
+      grid-row: 3 / 4;
+      grid-column: 2 / 3;
+      flex-direction: row;
     }
   }
 
-  &__door {
+  &__frame_wrapper {
     grid-row: 2 / 3;
-    grid-column: 1 / 2;
+    grid-column: 2 / 3;
     overflow: hidden;
   }
 }
 
 .dimension {
-  &_top {
+  & {
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 100%;
     place-content: center;
     place-items: center;
-
-    &__marker {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      place-content: center;
-      place-items: center;
-
-      &:first-of-type {
-        margin-right: -30px;
-      }
-
-      &:last-of-type {
-        margin-left: -30px;
-      }
-    }
-
-    &__line {
-      width: calc(100% - 40px);
-      height: 4px;
-      place-self: center;
-      background: black;
-    }
   }
 
-  &_right {
+  &__marker {
     display: flex;
     flex-direction: row;
-    width: 100%;
-    height: 100%;
+    flex-wrap: wrap;
     place-content: center;
     place-items: center;
-
-    &__marker {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      place-content: center;
-      place-items: center;
-
-      &:first-of-type {
-        margin-bottom: -30px;
-      }
-
-      &:last-of-type {
-        margin-top: -32px;
-      }
-    }
-
-    &__line {
-      width: 4px;
-      height: calc(100% - 35px);
-      place-self: center;
-      background: black;
-    }
   }
-}
 
-.line {
-  position: relative;
+  &__line {
+    position: relative;
+    place-self: center;
+    background: black;
+  }
 
   &__input {
     position: absolute;
-    width: 200px;
-    height: 32px;
-    border: 1px solid black;
-    border-radius: 6px;
-    padding: 4px 8px;
-  }
-
-  &--top &__input {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 200px;
+    height: 32px;
+    padding: 4px 8px;
+    border: 1px solid black;
+    border-radius: 6px;
+    text-align: center;
+  }
+}
+
+//@ top
+.dimension {
+  &--top &__marker {
+    &:first-of-type {
+      margin-right: -30px;
+    }
+
+    &:last-of-type {
+      margin-left: -30px;
+    }
+  }
+
+  &--top &__line {
+    width: calc(100% - 36px);
+    height: 4px;
+  }
+}
+
+//@ left
+.dimension {
+  &--left &__marker {
+    &:first-of-type {
+      margin-bottom: -30px;
+    }
+
+    &:last-of-type {
+      margin-top: -32px;
+    }
+  }
+
+  &--left &__line {
+    width: 4px;
+    height: calc(100% - 36px);
+  }
+
+  &--left &__input {
+    transform-origin: top left;
+    transform: rotateZ(-90deg) translate(-50%, -50%);
+  }
+}
+
+//@ right
+.dimension {
+  &--right {
+    height: calc(100% - 48px);
+    margin-top: calc(48px + 4px);
+  }
+
+  &--right &__marker {
+    &:first-of-type {
+      margin-bottom: -30px;
+    }
+
+    &:last-of-type {
+      margin-top: -32px;
+    }
+  }
+
+  &--right &__line {
+    width: 4px;
+    height: calc(100% - 35px);
   }
 
   &--right &__input {
-    top: 50%;
-    left: 50%;
     transform-origin: top left;
     transform: rotateZ(-90deg) translate(-50%, -50%);
+  }
+}
+
+//@ bottom
+.dimension {
+  &--bottom {
+    width: calc(100% - (48px * 2));
+    margin: auto;
+  }
+
+  &--bottom &__marker {
+    &:first-of-type {
+      margin-right: -30px;
+    }
+
+    &:last-of-type {
+      margin-left: -30px;
+    }
+  }
+
+  &--bottom &__line {
+    width: calc(100% - 40px);
+    height: 4px;
   }
 }

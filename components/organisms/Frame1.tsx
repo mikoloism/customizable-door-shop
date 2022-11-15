@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import style from 'styles/frame-template-1.module.scss';
+import style from 'styles/frame-1.module.scss';
 import container from 'styles/home.module.scss';
 
 export function FrameTemplate1() {

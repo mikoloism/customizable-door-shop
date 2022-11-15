@@ -1,6 +1,19 @@
 :root {
+  --inside-frame-width: 500px;
+  --inside-frame-height: 800px;
+  --inside-frame-profile-width: 100px;
+  --inside-frame-tool-width: 50px;
+
+  --outside-frame-right-width: 48px;
+  --outside-frame-left-width: 48px;
+  --outside-frame-top-width: 48px;
+
+  --frame-scale: 1;
+
+  //!- below variable was deprecated
   --door-width: 500px;
   --door-height: 800px;
   --profile-width: 100px;
+  --profile-tool-width: 50px;
   --door-scale: 1;
 }
