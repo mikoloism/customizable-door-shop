@@ -1,34 +1,42 @@
-.frame {
-  position: relative;
-}
-
 //@outside
 .frame-outside {
   & {
     grid-row: 2 / 3;
     grid-column: 2 / 3;
+    position: relative;
     width: var(--outside-frame-width);
     height: var(--outside-frame-height);
-  }
-
-  &__top {
-    clip-path: polygon(0 0, 100% 0, calc(100% - 48px) 48px, 48px 48px);
-  }
-
-  &__left {
-    clip-path: polygon(0 0, 100% 48px, 100% 100%, 0 100%);
-  }
-
-  &__right {
-    clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 48px);
+    transform-origin: center center;
+    transform: scale(var(--frame-scale));
   }
 
   &__top,
   &__left,
   &__right {
+    position: absolute;
+    width: 100%;
+    height: 100%;
     background-repeat: round;
     background-size: revert;
     background-image: url('/H_Q_8290.png');
+  }
+
+  &__top {
+    top: 0;
+    height: var(--outside-frame-top-width);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 48px) 48px, 48px 48px);
+  }
+
+  &__left {
+    left: 0;
+    width: var(--outside-frame-left-width);
+    clip-path: polygon(0 0, 100% 48px, 100% 100%, 0 100%);
+  }
+
+  &__right {
+    right: 0;
+    width: var(--outside-frame-right-width);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 48px);
   }
 
   &__inside {
@@ -38,10 +46,11 @@
 //@inside
 .frame-inside {
   & {
+    position: absolute;
+    top: var(--outside-frame-top-width);
+    left: var(--outside-frame-left-width);
     width: var(--inside-frame-width);
     height: var(--inside-frame-height);
-    transform-origin: center center;
-    transform: scale(var(--frame-scale));
   }
 
   &__top,
@@ -51,15 +60,19 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background-repeat: round;
-    background-size: revert;
-    background-image: url('/H_Q_8569.png');
+
+    & {
+      background-repeat: round;
+      background-size: revert;
+      background-image: url('/H_Q_8569.png');
+    }
   }
 
   &__left,
   &__right {
     width: var(--inside-frame-height);
     height: var(--inside-frame-profile-width);
+    top: 0;
     transform-origin: 0 0;
   }
 
@@ -97,7 +110,7 @@
 
   &__right {
     right: 0;
-    transform: translate(var(--inside-frame-profile-width, 0)) rotateZ(90deg);
+    transform: translate(var(--inside-frame-height), 0) rotateZ(90deg);
   }
 
   &__bottom {

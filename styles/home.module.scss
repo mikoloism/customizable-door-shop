@@ -11,10 +11,10 @@
 .board {
   & {
     display: grid;
-    grid-template-rows: 48px 1fr 48px;
-    grid-template-columns: 48px 1fr 48px;
-    width: calc(var(--door-width) + 48px + 32px);
-    height: calc(var(--door-height) + 48px + 32px);
+    grid-template-rows: 48px (var(--outside-frame-height)) 48px;
+    grid-template-columns: 48px (var(--outside-frame-width)) 48px;
+    width: calc(var(--outside-frame-width) + 48px + 48px);
+    height: calc(var(--outside-frame-height) + 48px + 48px);
     position: relative;
   }
 

@@ -6,7 +6,6 @@ import {
     PropsWithChildren,
     RefObject,
     useContext,
-    useEffect,
     useRef,
     useState,
 } from 'react';
@@ -16,11 +15,15 @@ import style from 'styles/home.module.scss';
 const KEYBOARD_ENTER = 'enter';
 const DEFAULT_FRAME_WIDTH_SIZE = 500;
 const DEFAULT_FRAME_HEIGHT_SIZE = 800;
-const PADDING_SIZE = 16 * 2;
-const DIMENSION_SIZE = 48 * 2;
-const OUTSIDE_FRAME_SIZE = 48;
+const PADDING_SIZE = 2 * 16;
+const DIMENSION_SIZE = 2 * 48;
+const OUTSIDE_FRAME_TOP = 48;
+const OUTSIDE_FRAME_SIDE = 2 * 48;
+const CONSTANCE_HEIGHT = OUTSIDE_FRAME_TOP + DIMENSION_SIZE + PADDING_SIZE;
+const CONSTANCE_WIDTH = OUTSIDE_FRAME_SIDE + DIMENSION_SIZE + PADDING_SIZE;
 
-const DimensionContext = createContext<[ContextState, any] | null>(null);
+const OutsideDimensionContext = createContext<[ContextState, any] | null>(null);
+const InsideDimensionContext = createContext<[ContextState, any] | null>(null);
 
 export function HomeTemplate() {
     const boardRef = useRef<HTMLDivElement>(null);
@@ -48,9 +51,9 @@ function Board(props: { boardRef: RefObject<HTMLDivElement> }) {
             className={style.board}
             ref={props.boardRef}>
             <DimensionTop />
-            <DimensionBottom />
-            <DimensionLeft />
             <DimensionRight />
+            {/* <DimensionLeft />
+            <DimensionBottom /> */}
             <FrameOutside>
                 <FrameInside />
             </FrameOutside>
@@ -60,11 +63,7 @@ function Board(props: { boardRef: RefObject<HTMLDivElement> }) {
 
 function FrameOutside(props: PropsWithChildren) {
     return (
-        <div
-            className={classNames(
-                frameStyle['frame'],
-                frameStyle['frame-outside']
-            )}>
+        <div className={frameStyle['frame-outside']}>
             <div className={frameStyle[`frame-outside__top`]}></div>
             <div className={frameStyle[`frame-outside__left`]}></div>
             <div className={frameStyle[`frame-outside__right`]}></div>
@@ -197,7 +196,8 @@ function Dimension(props: {
     defaultValue: number;
 }) {
     const [value, handleChange, handleSubmit] = useDimensionHandler(
-        props.defaultValue
+        props.defaultValue,
+        props.position === 'top' ? 'width' : 'height'
     );
 
     return (
@@ -228,18 +228,15 @@ function Dimension(props: {
 
 function DimensionContextProvider(props: ContextProps) {
     const [state, setState] = useState<ContextState>({
-        outside: { width: 0, height: 0 },
-        inside: {
-            width: DEFAULT_FRAME_WIDTH_SIZE,
-            height: DEFAULT_FRAME_HEIGHT_SIZE,
-        },
+        width: DEFAULT_FRAME_WIDTH_SIZE,
+        height: DEFAULT_FRAME_HEIGHT_SIZE,
     });
 
     return (
-        <DimensionContext.Provider
+        <OutsideDimensionContext.Provider
             value={[state, withContextProxy(props, state, setState)]}>
             {props.children}
-        </DimensionContext.Provider>
+        </OutsideDimensionContext.Provider>
     );
 }
 
@@ -248,73 +245,78 @@ function withContextProxy(
     context: ContextState,
     setContext: SetContext
 ) {
-    const setProxyState = (newState: ContextState) => {
+    const setProxyState = (userInput: ContextState) => {
         const { width: containerWidth, height: containerHeight } =
             props.containerRef.current!.getBoundingClientRect();
-        const { width, height } = newState.inside;
+        const { width, height } = userInput;
 
         if (width <= 200 || height <= 200) return;
 
-        var currentWidth = containerWidth;
-        var currentHeight = containerHeight;
+        const { width: insideFrameWidth, height: insideFrameHeight } =
+            computeSizeAndScale(
+                { width: containerWidth, height: containerHeight },
+                { width, height }
+            );
 
-        if (
-            (containerHeight - DIMENSION_SIZE - PADDING_SIZE) / height <
-            (containerWidth - DIMENSION_SIZE - PADDING_SIZE) / width
-        ) {
-            currentWidth = (currentHeight * width) / height;
-            currentHeight = containerHeight - DIMENSION_SIZE - PADDING_SIZE;
-        }
+        applySizeAndScaleStyle({
+            width: insideFrameWidth,
+            height: insideFrameHeight,
+        });
 
-        currentWidth = containerWidth - DIMENSION_SIZE - PADDING_SIZE;
-        currentHeight = (currentWidth * height) / width;
-
-        applySizeAndScale(
-            props.boardRef,
-            { width: currentWidth, height: currentHeight },
-            { width, height }
-        );
-
-        return setContext(() => ({ ...context, inside: { width, height } }));
+        return setContext(() => ({ ...context, width, height }));
     };
 
     return setProxyState;
 }
 
-function applySizeAndScale<T extends HTMLElement>(
-    boardRef: RefObject<T>,
+function computeSizeAndScale(
     board: { width: number; height: number },
-    frame: { width: number; height: number }
-) {
-    boardRef.current!.style.width = `${board.width + DIMENSION_SIZE}px`;
-    boardRef.current!.style.height = `${board.height + DIMENSION_SIZE}px`;
+    userInput: { width: number; height: number }
+): { width: number; height: number } {
+    let frameWidth = board.width - CONSTANCE_WIDTH;
+    let frameHeight = board.height - CONSTANCE_HEIGHT;
+    var heightScale = 1;
+    var widthScale = 1;
+
+    if (userInput.height > frameHeight) {
+        heightScale = userInput.height / frameHeight;
+    }
+
+    if (userInput.width > frameWidth) {
+        widthScale = userInput.width / frameWidth;
+    }
+
+    let ratio = Math.max(widthScale, heightScale);
+
+    let insideFrameHeight = userInput.height / ratio;
+    let insideFrameWidth = userInput.width / ratio;
+
+    return { width: insideFrameWidth, height: insideFrameHeight };
+}
+
+function applySizeAndScaleStyle(frameSize: { width: number; height: number }) {
     document.documentElement.style.setProperty(
         '--inside-frame-width',
-        `${frame.width}px`
+        `${frameSize.width}px`
     );
     document.documentElement.style.setProperty(
         '--inside-frame-height',
-        `${frame.height}px`
-    );
-    let frameScaleHeight = board.height / frame.height;
-    let frameScaleWidth = board.width / frame.width;
-    let frameScale = (frameScaleWidth + frameScaleHeight) / 2;
-    document.documentElement.style.setProperty(
-        '--frame-scale',
-        frameScale.toString()
+        `${frameSize.height}px`
     );
 }
 
-function useDimensionHandler(defaultValue: number): UseDimensionHandler {
-    const [context, setContext] = useContext(DimensionContext)!;
+function useDimensionHandler(
+    defaultValue: number,
+    property: 'width' | 'height'
+): UseDimensionHandler {
+    const [context, setContext] = useContext(OutsideDimensionContext)!;
     const [value, setValue] = useState<string>(defaultValue.toString());
 
     const onSubmit = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key.toLowerCase() === KEYBOARD_ENTER) {
             setContext({
-                ...context.inside,
-                ...context.outside,
-                inside: { width: parseFloat(value!) },
+                ...context,
+                [property]: parseFloat(value!),
             });
         }
     };
@@ -332,15 +334,8 @@ type ContextProps = PropsWithChildren<{
 }>;
 
 type ContextState = {
-    inside: {
-        width: number;
-        height: number;
-    };
-
-    outside: {
-        width: number;
-        height: number;
-    };
+    width: number;
+    height: number;
 };
 
 type SetContext = (
