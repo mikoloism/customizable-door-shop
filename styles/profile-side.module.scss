@@ -1,0 +1,17 @@
+.profile-side {
+  &--vertical {
+    // rotate 90
+  }
+
+  &--vertical &--flipped {
+    // rotate -90
+  }
+
+  &--horizontal {
+    // rotate 0
+  }
+
+  &--horizontal &--flipped {
+    // rotate 180
+  }
+}
