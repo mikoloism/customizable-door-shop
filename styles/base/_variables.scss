@@ -7,6 +7,13 @@
   --outside-frame-right-width: 48px;
   --outside-frame-left-width: 48px;
   --outside-frame-top-width: 48px;
+  --outside-frame-width: calc(
+    var(--inside-frame-width) +
+      (var(--outside-frame-left-width) + (var(--outside-frame-right-width)))
+  );
+  --outside-frame-height: calc(
+    var(--inside-frame-height) + (var(--outside-frame-top-width))
+  );
 
   --frame-scale: 1;
 

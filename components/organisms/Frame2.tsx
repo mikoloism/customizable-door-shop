@@ -1,14 +1,8 @@
 import classNames from 'classnames';
-import Image from 'next/image';
 import style from 'styles/frame-2.module.scss';
 
-export function Frame2(props: { frameImage: string; middleImage: string }) {
+export function Frame2() {
     return (
-        // <div
-        //     className={classNames(
-        //         style.frame__wrapper,
-        //         container.board__frame_wrapper
-        //     )}>
         <div
             className={classNames(
                 style.frame,
@@ -21,6 +15,5 @@ export function Frame2(props: { frameImage: string; middleImage: string }) {
             <div className={style[`frame-inside__bottom`]}></div>
             <div className={style[`frame-inside__middle`]}></div>
         </div>
-        // </div>
     );
 }

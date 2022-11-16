@@ -6,6 +6,7 @@ import {
     PropsWithChildren,
     RefObject,
     useContext,
+    useEffect,
     useRef,
     useState,
 } from 'react';
@@ -51,10 +52,7 @@ function Board(props: { boardRef: RefObject<HTMLDivElement> }) {
             <DimensionLeft />
             <DimensionRight />
             <FrameOutside>
-                <FrameInside
-                    frameImage={'/H_Q_8569.png'}
-                    middleImage={'/H_Q_8290.png'}
-                />
+                <FrameInside />
             </FrameOutside>
         </div>
     );
