@@ -23,7 +23,7 @@
         "README.md": true,
         "package.json": true,
         ".next": true,
-        "public": false,
+        "public": true,
         "tsconfig.json": true
     },
     "explorerExclude.backup": {},
