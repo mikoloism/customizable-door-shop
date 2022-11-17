@@ -1,4 +1,18 @@
 :root {
+  --profile-image-source: url('/H_Q_8569.png');
+  --profile-separator-size: 100px;
+  --profile-separator-tool-width: 32px;
+  --profile-separator-horizontal-tool-width: 32px;
+  --profile-separator-vertical-tool-width: 32px;
+
+  --profile-side-size: 100px;
+  --profile-side-tool-width: 32px;
+
+  --panel-image-source: url('/H_Q_8290.png');
+}
+
+//@ git:(/main@v1)
+:root {
   --inside-frame-width: 500px;
   --inside-frame-height: 800px;
   --inside-frame-profile-width: 100px;

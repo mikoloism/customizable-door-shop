@@ -1,2 +1,7 @@
 .panel {
+  position: absolute;
+  background-image: var(--panel-image-source);
+  background-repeat: round;
+  background-size: revert;
+  z-index: 9;
 }
