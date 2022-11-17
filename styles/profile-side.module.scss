@@ -1,17 +1,67 @@
 .profile-side {
-  &--vertical {
-    // rotate 90
+  & {
+    position: absolute;
+    width: var(--profile-side-size);
+    height: 100%;
+    z-index: 10;
+
+    &__image {
+      width: 100%;
+      height: var(--profile-side-size);
+      background-repeat: round;
+      background-size: revert;
+      background-image: var(--profile-image-source);
+    }
   }
 
-  &--vertical &--flipped {
-    // rotate -90
+  &--rotate-90 &__image {
+    transform: rotateZ(90deg) translate(0, -100%);
+    transform-origin: 0 0;
   }
 
-  &--horizontal {
-    // rotate 0
+  &--rotate-270 &__image {
+    transform: rotateZ(-90deg) translate(-100%, 0);
+    transform-origin: 0 0;
   }
 
-  &--horizontal &--flipped {
-    // rotate 180
+  &--rotate-0 {
+    & {
+      height: var(--profile-side-size);
+      width: 100%;
+    }
+
+    &__image {
+      transform: rotateZ(0deg);
+      transform-origin: center;
+    }
+
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - var(--profile-side-tool-width)),
+      calc(100% - var(--profile-side-tool-width)) 100%,
+      var(--profile-side-tool-width) 100%,
+      0 calc(100% - var(--profile-side-tool-width))
+    );
+  }
+
+  &--rotate-180 {
+    & {
+      height: var(--profile-side-size);
+      width: 100%;
+    }
+
+    &__image {
+      transform: rotateZ(180deg);
+      transform-origin: center center;
+    }
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - var(--profile-side-tool-width)),
+      calc(100% - var(--profile-side-tool-width)) 100%,
+      var(--profile-side-tool-width) 100%,
+      0 calc(100% - var(--profile-side-tool-width))
+    );
   }
 }
