@@ -1,176 +1,182 @@
 import { Group } from 'components/Door/Group';
-import type { PropsWithPosition } from 'components/Door/types';
-import { ProfileSeparator } from 'components/Door/ProfileSeparator';
-import { ProfileSide } from 'components/Door/ProfileSide';
 import { Panel } from 'components/Door/Panel';
 import {
-    Component,
-    createRef,
-    RefObject,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+    ProfileSeparator,
+    Props as ProfileSeparatorProps,
+} from 'components/Door/ProfileSeparator';
+import {
+    ProfileSide,
+    Props as ProfileSideProps,
+} from 'components/Door/ProfileSide';
+import { Children, Component, createRef, RefObject } from 'react';
 
 export function generateDoor(
     data: Array<TreeData>,
-    mountRef: RefObject<HTMLDivElement>
+    wrapperRef: RefObject<HTMLDivElement>
 ) {
-    return data.map((item: TreeData, index: number) => {
-        if (item.type === 'group') {
-            return (
-                <GroupRenderer
-                    key={generateRandomKey()}
-                    item={item}
-                />
-            );
-        }
-
-        if (item.type === 'profile-side') {
-            return (
-                <ProfileSide
-                    key={generateRandomKey()}
-                    position={item.position}
-                    rotate={item.rotate ?? '0'}
-                />
-            );
-        }
-
-        if (item.type === 'profile-separator') {
-            if (item.position !== undefined) {
-                return (
-                    <ProfileSeparator
-                        key={generateRandomKey()}
-                        axis={item.axis ?? 'separator'}
-                        position={item.position}
-                    />
-                );
-            }
-
-            return (
-                <ProfileSeparator
-                    key={generateRandomKey()}
-                    axis={item.axis ?? 'separator'}
-                />
-            );
-        }
-
-        if (item.type === 'panel') {
-            return (
-                <PanelRenderer
-                    key={generateRandomKey()}
-                    item={item}
-                />
-            );
-        }
-
-        return <></>;
-    });
+    return Children.toArray(data.map(mapTreeData));
 }
 
-function generateRandomKey(): string {
-    return `${Math.floor(Math.random() * 1000 + 10)}`;
+function mapTreeData(item: TreeData) {
+    const RendererComponent = {
+        group: GroupRenderer,
+        panel: PanelRenderer,
+        'profile-side': ProfileSideRenderer,
+        'profile-separator': ProfileSeparatorRenderer,
+    }[item.type];
+
+    return RendererComponent && <RendererComponent item={item} />;
 }
 
-export type TreeData =
-    | { type: 'group'; children: Array<TreeData> }
-    | { type: 'panel' }
-    | PropsWithPosition<{
-          type: 'profile-side';
-          rotate: '0' | '90' | '180' | '270';
-      }>
-    | PropsWithPosition<{
-          type: 'profile-separator';
-          axis: 'vertical' | 'horizontal';
-      }>;
-
-class GroupRenderer extends Component<
-    { item: any },
-    { right: number; left: number }
-> {
+class GroupRenderer extends Component<ItemProps, GroupRendererState> {
     private currentRef: RefObject<HTMLDivElement>;
-    private groupKey: string;
 
-    constructor(props: { item: any }) {
+    public constructor(props: ItemProps) {
         super(props);
-        this.state = { right: 0, left: 0 };
+        this.state = { right: 0, left: 0, top: 0, bottom: 0 };
         this.currentRef = createRef<HTMLDivElement>();
-        this.groupKey = generateRandomKey();
+        this.getPrevBoundingClientRect =
+            this.getPrevBoundingClientRect.bind(this);
+        this.getNextBoundingClientRect =
+            this.getNextBoundingClientRect.bind(this);
     }
 
-    componentDidMount(): void {
-        this.computeRightAndLeft.bind(this)();
+    public componentDidMount(): void {
+        if (this.props.item.direction === 'column')
+            return this.computeRightAndLeft.bind(this)();
+
+        return this.computeTopAndBottom.bind(this)();
     }
 
     private computeRightAndLeft(): void {
-        const currentElement = this.currentRef.current;
-        const prevElement = currentElement!.previousElementSibling;
-        const nextElement = currentElement!.nextElementSibling;
-        this.setState(() => ({
-            left: prevElement!.getBoundingClientRect().width,
-            right: nextElement!.getBoundingClientRect().width,
+        const prevElement = this.getPrevBoundingClientRect();
+        const nextElement = this.getNextBoundingClientRect();
+        const profileSideToolWidth = parseInt(
+            getCssVariable('profile-side-tool-width')
+        );
+
+        this.setState((state: GroupRendererState) => ({
+            ...state,
+            left: prevElement.width - profileSideToolWidth,
+            right: nextElement.width - profileSideToolWidth,
         }));
     }
 
-    render() {
+    private computeTopAndBottom(): void {
+        const prevElement = this.getPrevBoundingClientRect();
+        const nextElement = this.getNextBoundingClientRect();
+        const profileSideToolWidth = parseInt(
+            getCssVariable('profile-side-tool-width')
+        );
+
+        this.setState((state: GroupRendererState) => ({
+            ...state,
+            top: prevElement.height - profileSideToolWidth,
+            bottom: nextElement.height - profileSideToolWidth,
+        }));
+    }
+
+    private getPrevBoundingClientRect() {
+        const currentElement = this.currentRef.current;
+        const prevElement = currentElement!.previousElementSibling;
+
+        return prevElement!.getBoundingClientRect();
+    }
+
+    private getNextBoundingClientRect() {
+        const currentElement = this.currentRef.current;
+        const nextElement = currentElement!.nextElementSibling;
+
+        return nextElement!.getBoundingClientRect();
+    }
+
+    public render() {
         return (
             <Group
                 currentRef={this.currentRef}
-                position={{
-                    top: 0,
-                    bottom: 0,
-                    right: this.state.right,
-                    left: this.state.left,
-                }}>
+                position={this.state}>
                 {generateDoor(this.props.item.children, this.currentRef)}
             </Group>
         );
     }
 }
 
-class PanelRenderer extends Component<
-    { item: any },
-    { top: number; bottom: number }
-> {
+class PanelRenderer extends Component<ItemProps, PanelRendererState> {
     private currentRef: RefObject<HTMLDivElement>;
 
-    constructor(props: { item: any }) {
+    public constructor(props: { item: any }) {
         super(props);
 
-        this.state = { top: 0, bottom: 0 };
+        this.state = { top: 0, bottom: 0, right: 0, left: 0 };
         this.currentRef = createRef<HTMLDivElement>();
     }
 
-    componentDidMount(): void {
+    public componentDidMount(): void {
         this.computeTopAndBottom.bind(this)();
     }
 
     private computeTopAndBottom(): void {
-        const currentElement = this.currentRef.current!;
-        const prevElement = currentElement.previousElementSibling!;
-        const nextElement = currentElement.nextElementSibling!;
-        const profileToolWidth = parseInt(
-            document.documentElement.style.getPropertyValue(
-                '--profile-side-tool-width'
-            )
-        );
-        this.setState(() => ({
-            top: prevElement.getBoundingClientRect().height,
-            bottom: nextElement.getBoundingClientRect().height,
+        const currentElement = this.currentRef.current;
+        const prevElement = currentElement?.previousElementSibling;
+        const nextElement = currentElement?.nextElementSibling;
+
+        this.setState((state: PanelRendererState) => ({
+            ...state,
+            top: prevElement?.getBoundingClientRect().height ?? 0,
+            bottom: nextElement?.getBoundingClientRect().height ?? 0,
         }));
     }
 
-    render() {
+    public render() {
         return (
             <Panel
                 currentRef={this.currentRef}
-                position={{
-                    top: this.state.top,
-                    bottom: this.state.bottom,
-                    right: 0,
-                    left: 0,
-                }}
+                position={this.state}
             />
         );
     }
 }
+
+function ProfileSideRenderer({ item }: ItemProps) {
+    return (
+        <ProfileSide
+            position={item.position}
+            rotate={item.rotate ?? '0'}
+        />
+    );
+}
+
+function ProfileSeparatorRenderer({ item }: ItemProps) {
+    return (
+        <ProfileSeparator
+            axis={item.axis ?? 'horizontal'}
+            position={item?.position}
+        />
+    );
+}
+
+function getCssVariable(
+    name: string,
+    element: HTMLElement = document.documentElement
+): string {
+    return getComputedStyle(element).getPropertyValue(`--${name}`);
+}
+
+type ItemProps = { item: any };
+type GroupRendererState = {
+    top: number;
+    bottom: number;
+    right: number;
+    left: number;
+};
+type PanelRendererState = {
+    top: number;
+    bottom: number;
+    right: number;
+    left: number;
+};
+export type TreeData =
+    | { type: 'panel' }
+    | { type: 'group'; children: Array<TreeData>; direction: 'row' | 'column' }
+    | ({ type: 'profile-side' } & ProfileSideProps)
+    | ({ type: 'profile-separator' } & ProfileSeparatorProps);
