@@ -1,8 +1,6 @@
 .profile-side {
   & {
     position: absolute;
-    width: var(--profile-side-size);
-    height: 100%;
     z-index: 10;
 
     &__image {
@@ -10,30 +8,38 @@
       height: var(--profile-side-size);
       background-repeat: round;
       background-size: revert;
-      background-image: var(--profile-image-source);
+      // background-image: var(--profile-image-source);
+      background-image: var(--profile-side-image-source);
     }
   }
 
-  &--rotate-90 &__image {
+  &--rotate-90,
+  &--rotate-270 {
+    width: calc(var(--profile-side-size) + var(--profile-side-tool-width));
+    height: 100%;
+    z-index: 8;
+  }
+
+  &--rotate-0,
+  &--rotate-180 {
+    height: calc(var(--profile-side-size) + var(--profile-side-tool-width));
+    width: 100%;
+    z-index: 10;
+  }
+
+  &--rotate-270 &__image {
     transform: rotateZ(90deg) translate(0, -100%);
     transform-origin: 0 0;
   }
 
-  &--rotate-270 &__image {
+  &--rotate-90 &__image {
     transform: rotateZ(-90deg) translate(-100%, 0);
     transform-origin: 0 0;
   }
 
-  &--rotate-0 {
-    & {
-      height: var(--profile-side-size);
-      width: 100%;
-    }
-
-    &__image {
-      transform: rotateZ(0deg);
-      transform-origin: center;
-    }
+  &--rotate-0 &__image {
+    transform: rotateZ(0deg);
+    transform-origin: center;
 
     clip-path: polygon(
       0 0,
@@ -45,16 +51,10 @@
     );
   }
 
-  &--rotate-180 {
-    & {
-      height: var(--profile-side-size);
-      width: 100%;
-    }
+  &--rotate-180 &__image {
+    transform: rotateZ(180deg);
+    transform-origin: center center;
 
-    &__image {
-      transform: rotateZ(180deg);
-      transform-origin: center center;
-    }
     clip-path: polygon(
       0 0,
       100% 0,
