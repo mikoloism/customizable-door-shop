@@ -1,12 +1,15 @@
 :root {
   --profile-image-source: url('/H_Q_8569.png');
-  --profile-separator-size: 100px;
-  --profile-separator-tool-width: 32px;
-  --profile-separator-horizontal-tool-width: 32px;
-  --profile-separator-vertical-tool-width: 32px;
+  --profile-side-image-source: url('/profile-side.png');
+  --profile-separator-image-source: url('/profile-middle.png');
+
+  --profile-separator-size: 50px;
+  --profile-separator-tool-width: 25px;
+  --profile-separator-horizontal-tool-width: 25px;
+  --profile-separator-vertical-tool-width: 25px;
 
   --profile-side-size: 100px;
-  --profile-side-tool-width: 32px;
+  --profile-side-tool-width: 25px;
 
   --panel-image-source: url('/H_Q_8290.png');
 }
