@@ -20,7 +20,10 @@ function computePositionProperty(
     propertyName: Properties
 ) {
     if (position?.[propertyName] !== undefined) {
-        return { [propertyName]: `${position[propertyName]}px` };
+        if (typeof position?.[propertyName] === 'number')
+            return { [propertyName]: `${position[propertyName]}px` };
+
+        return { [propertyName]: position[propertyName] };
     }
 
     return {};
