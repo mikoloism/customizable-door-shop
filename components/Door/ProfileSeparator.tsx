@@ -16,4 +16,4 @@ export function ProfileSeparator(props: Props) {
     );
 }
 
-type Props = PropsWithPosition<{ axis: 'vertical' | 'horizontal' }>;
+export type Props = PropsWithPosition<{ axis: 'vertical' | 'horizontal' }>;
