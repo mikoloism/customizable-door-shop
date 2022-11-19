@@ -22,7 +22,17 @@ export default function HomePage() {
                     direction: 'row',
                     children: [
                         { type: 'panel' },
-                        { type: 'profile-separator', axis: 'horizontal' },
+                        {
+                            type: 'profile-separator',
+                            axis: 'horizontal',
+                            position: { top: '33.333333%' },
+                        },
+                        { type: 'panel' },
+                        {
+                            type: 'profile-separator',
+                            axis: 'horizontal',
+                            position: { top: '66.666667%' },
+                        },
                         { type: 'panel' },
                     ],
                 },
