@@ -39,6 +39,7 @@ class GroupRenderer extends Component<ItemProps, GroupRendererState> {
             this.getPrevBoundingClientRect.bind(this);
         this.getNextBoundingClientRect =
             this.getNextBoundingClientRect.bind(this);
+        this.isSideWrapper = this.isSideWrapper.bind(this);
     }
 
     public componentDidMount(): void {
@@ -88,6 +89,14 @@ class GroupRenderer extends Component<ItemProps, GroupRendererState> {
         const nextElement = currentElement!.nextElementSibling;
 
         return nextElement!.getBoundingClientRect();
+    }
+
+    private isSideWrapper(): boolean {
+        let result = this.props.item.children.filter(
+            (child: TreeData) => child.type === 'profile-side'
+        );
+
+        return result.length != -1;
     }
 
     public render() {
@@ -181,5 +190,5 @@ export type TreeData =
     | ({ type: 'profile-side' } & ProfileSideProps)
     | ({ type: 'profile-separator' } & Omit<
           ProfileSeparatorProps,
-          'right' | 'bottom'
-      >);
+          'position'
+      > & { position?: { top?: number | string; left?: number | string } });
