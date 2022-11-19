@@ -179,4 +179,7 @@ export type TreeData =
     | { type: 'panel' }
     | { type: 'group'; children: Array<TreeData>; direction: 'row' | 'column' }
     | ({ type: 'profile-side' } & ProfileSideProps)
-    | ({ type: 'profile-separator' } & ProfileSeparatorProps);
+    | ({ type: 'profile-separator' } & Omit<
+          ProfileSeparatorProps,
+          'right' | 'bottom'
+      >);
