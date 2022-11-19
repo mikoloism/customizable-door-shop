@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import style from 'styles/profile-separator.module.scss';
-import { withPositionStyle, withPositionVariables } from './hooks';
+import { withPositionVariables } from './hooks';
 import { PropsWithPosition } from './types';
 
 export function ProfileSeparator(props: Props) {
