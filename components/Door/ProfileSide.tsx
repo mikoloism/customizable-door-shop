@@ -24,7 +24,10 @@ export function ProfileSide(props: Props) {
             {['90', '270'].includes(props.rotate) ? (
                 <div
                     className={style[`profile-side__image`]}
-                    style={{ width, height: 'var(--profile-side-size)' }}></div>
+                    style={{
+                        width,
+                        height: 'calc(var(--profile-side-size) + var(--profile-side-tool-width))',
+                    }}></div>
             ) : (
                 <div
                     className={style[`profile-side__image`]}
@@ -34,6 +37,6 @@ export function ProfileSide(props: Props) {
     );
 }
 
-type Props = PropsWithPosition<{
+export type Props = PropsWithPosition<{
     rotate: '90' | '270' | '0' | '180';
 }>;
