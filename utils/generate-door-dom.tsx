@@ -1,13 +1,13 @@
-import { Group } from 'components/Door/Group';
-import { Panel } from 'components/Door/Panel';
+import { Group } from 'components/atoms/Door/Group';
+import { Panel } from 'components/atoms/Door/Panel';
 import {
     ProfileSeparator,
     Props as ProfileSeparatorProps,
-} from 'components/Door/ProfileSeparator';
+} from 'components/atoms/Door/ProfileSeparator';
 import {
     ProfileSide,
     Props as ProfileSideProps,
-} from 'components/Door/ProfileSide';
+} from 'components/atoms/Door/ProfileSide';
 import { Children, Component, createRef, RefObject } from 'react';
 
 export function generateDoor(
