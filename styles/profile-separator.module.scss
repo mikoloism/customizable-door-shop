@@ -2,9 +2,12 @@
   & {
     --profile-separator-position: 0;
 
+    z-index: 12;
     position: absolute;
     width: 100%;
-    height: var(--profile-separator-size);
+    height: calc(
+      var(--profile-separator-size) + (2 * var(--profile-separator-tool-width))
+    );
 
     clip-path: polygon(
       var(--profile-separator-tool-width) 0,
@@ -19,10 +22,12 @@
 
     background-repeat: round;
     background-size: revert;
-    background-image: var(--profile-image-source);
+    // background-image: var(--profile-image-source);
+    background-image: var(--profile-separator-image-source);
   }
 
   &--vertical {
+    // TODO : copy from top property
     left: var(--profile-separator-position);
     width: 100%;
     transform: translate(0, -100%) rotateZ(90deg);
@@ -30,7 +35,15 @@
   }
 
   &--horizontal {
-    top: var(--profile-separator-position);
+    top: calc(
+      var(--profile-separator-position) -
+        (
+          (
+              var(--profile-separator-size) +
+                (2 * var(--profile-separator-tool-width))
+            ) / 2
+        )
+    );
     transform: rotateZ(0deg);
     transform-origin: center;
   }
