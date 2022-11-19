@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { generateDoor, TreeData } from 'utils/generate-door-dom';
 
 export default function HomePage() {
-    const DoorDOM: TreeData[] = [
+    const doorDomObject: TreeData[] = [
         {
             type: 'profile-side',
             rotate: '90',
@@ -10,13 +10,22 @@ export default function HomePage() {
         },
         {
             type: 'group',
+            direction: 'column',
             children: [
                 {
                     type: 'profile-side',
                     rotate: '0',
                     position: { top: 0 },
                 },
-                { type: 'panel' },
+                {
+                    type: 'group',
+                    direction: 'row',
+                    children: [
+                        { type: 'panel' },
+                        { type: 'profile-separator', axis: 'horizontal' },
+                        { type: 'panel' },
+                    ],
+                },
                 {
                     type: 'profile-side',
                     rotate: '180',
@@ -31,14 +40,13 @@ export default function HomePage() {
         },
     ];
 
-    const parentRef = useRef<HTMLDivElement>(null);
-    const generatedDom = generateDoor(DoorDOM, parentRef);
-    console.log({ DoorDOM, generatedDom });
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const generatedDom = generateDoor(doorDomObject, wrapperRef);
 
     return (
         <div
             className="relative"
-            ref={parentRef}
+            ref={wrapperRef}
             style={{
                 width: '500px',
                 height: '800px',
