@@ -1,27 +1,26 @@
 import classnames from 'classnames';
-import { RefObject } from 'react';
 import style from 'styles/profile-separator.module.scss';
-import { withPositionVariables } from './hooks';
-import { PropsWithPosition } from './types';
+import { withComputedPosition, withComputedSize } from './hooks';
+import { PropsWithPosition, PropsWithRef, PropsWithStyle } from './types';
 
 export function ProfileSeparator(props: Props) {
     const className = classnames({
         [style[`profile-separator`]]: true,
         [style[`profile-separator--${props.axis}`]]: true,
     });
+    const inlineStyle = {
+        ...withComputedPosition(props),
+        ...withComputedSize(props),
+    };
 
     return (
         <div
-            ref={props.currentRef}
+            ref={props.reference}
             className={className}
-            style={withPositionVariables(
-                props,
-                'profile-separator-position'
-            )}></div>
+            style={inlineStyle}></div>
     );
 }
 
-export type Props = PropsWithPosition<{
+export type Props = PropsWithRef<PropsWithPosition & PropsWithStyle> & {
     axis: 'vertical' | 'horizontal';
-    currentRef: RefObject<HTMLDivElement>;
-}>;
+};
