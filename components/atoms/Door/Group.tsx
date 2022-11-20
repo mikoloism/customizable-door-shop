@@ -1,22 +1,24 @@
 import classnames from 'classnames';
-import { forwardRef, PropsWithChildren, RefObject } from 'react';
+import { PropsWithChildren } from 'react';
 import style from 'styles/group.module.scss';
-import { withPositionStyle } from './hooks';
-import { PropsWithPosition } from './types';
+import { withComputedPosition, withComputedSize } from './hooks';
+import { PropsWithPosition, PropsWithRef, PropsWithStyle } from './types';
 
 export function Group(props: Props) {
     const className = classnames({ [style[`group`]]: true });
+    const inlineStyle = {
+        ...withComputedPosition(props),
+        ...withComputedSize(props),
+    };
 
     return (
         <div
-            ref={props.currentRef}
+            ref={props.reference}
             className={className}
-            style={withPositionStyle(props)}>
+            style={inlineStyle}>
             {props.children}
         </div>
     );
 }
 
-type Props = PropsWithPosition<
-    PropsWithChildren & { currentRef: RefObject<HTMLDivElement> }
->;
+type Props = PropsWithRef<PropsWithPosition<PropsWithStyle<PropsWithChildren>>>;

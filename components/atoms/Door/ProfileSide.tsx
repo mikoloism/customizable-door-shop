@@ -1,8 +1,8 @@
 import classnames from 'classnames';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import style from 'styles/profile-side.module.scss';
-import { withPositionStyle } from './hooks';
-import { PropsWithPosition } from './types';
+import { withComputedPosition, withComputedSize } from './hooks';
+import { PropsWithPosition, PropsWithRef, PropsWithStyle } from './types';
 
 export function ProfileSide(props: Props) {
     const [width, setWidth] = useState<number>(0);
@@ -10,17 +10,20 @@ export function ProfileSide(props: Props) {
         [style[`profile-side`]]: true,
         [style[`profile-side--rotate-${props.rotate}`]]: true,
     });
-    const sideRef = useRef<HTMLDivElement>(null);
+    const inlineStyle = {
+        ...withComputedPosition(props),
+        ...withComputedSize(props),
+    };
 
     useEffect(() => {
-        setWidth(sideRef.current!.getBoundingClientRect().height);
-    }, []);
+        setWidth(props.reference.current!.getBoundingClientRect().height);
+    }, [props.reference]);
 
     return (
         <div
-            ref={sideRef}
+            ref={props.reference}
             className={className}
-            style={withPositionStyle(props)}>
+            style={inlineStyle}>
             {['90', '270'].includes(props.rotate) ? (
                 <div
                     className={style[`profile-side__image`]}
@@ -37,6 +40,10 @@ export function ProfileSide(props: Props) {
     );
 }
 
-export type Props = PropsWithPosition<{
-    rotate: '90' | '270' | '0' | '180';
-}>;
+export type Props = PropsWithRef<
+    PropsWithPosition<
+        PropsWithStyle<{
+            rotate: '90' | '270' | '0' | '180';
+        }>
+    >
+>;
