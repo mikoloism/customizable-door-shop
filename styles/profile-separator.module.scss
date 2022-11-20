@@ -1,14 +1,28 @@
 .profile-separator {
   & {
-    --profile-separator-position: 0;
+    --position-top: initial;
+    --position-right: initial;
+    --position-bottom: initial;
+    --position-left: initial;
+  }
 
-    z-index: 12;
+  & {
     position: absolute;
+    top: var(--position-top);
+    right: var(--position-right);
+    bottom: var(--position-bottom);
+    left: var(--position-left);
+    z-index: 12;
+  }
+
+  & {
     width: 100%;
     height: calc(
       var(--profile-separator-size) + (2 * var(--profile-separator-tool-width))
     );
+  }
 
+  & {
     clip-path: polygon(
       var(--profile-separator-tool-width) 0,
       calc(100% - var(--profile-separator-tool-width)) 0,
@@ -27,23 +41,14 @@
   }
 
   &--vertical {
-    // TODO : copy from top property
-    left: var(--profile-separator-position);
+    left: calc(var(--position-left) - var(--profile-tool-width));
     width: 100%;
     transform: translate(0, -100%) rotateZ(90deg);
     transform-origin: 0 100%;
   }
 
   &--horizontal {
-    top: calc(
-      var(--profile-separator-position) -
-        (
-          (
-              var(--profile-separator-size) +
-                (2 * var(--profile-separator-tool-width))
-            ) / 2
-        )
-    );
+    top: calc(var(--position-top) - var(--profile-tool-width));
     transform: rotateZ(0deg);
     transform-origin: center;
   }

@@ -1,16 +1,27 @@
 .profile-side {
   & {
-    position: absolute;
-    z-index: 10;
+    --position-top: initial;
+    --position-right: initial;
+    --position-bottom: initial;
+    --position-left: initial;
+  }
 
-    &__image {
-      width: 100%;
-      height: var(--profile-side-size);
-      background-repeat: round;
-      background-size: revert;
-      // background-image: var(--profile-image-source);
-      background-image: var(--profile-side-image-source);
-    }
+  & {
+    position: absolute;
+    top: var(--position-top);
+    right: var(--position-right);
+    bottom: var(--position-bottom);
+    left: var(--position-left);
+    z-index: 10;
+  }
+
+  &__image {
+    width: 100%;
+    height: var(--profile-side-size);
+    background-repeat: round;
+    background-size: revert;
+    // background-image: var(--profile-image-source);
+    background-image: var(--profile-side-image-source);
   }
 
   &--rotate-90,

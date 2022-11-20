@@ -1,7 +1,25 @@
 .panel {
-  position: absolute;
-  background-image: var(--panel-image-source);
-  background-repeat: round;
-  background-size: revert;
-  z-index: 7;
+  --position-top: initial;
+  --position-right: initial;
+  --position-bottom: initial;
+  --position-left: initial;
+  --width: auto;
+  --height: auto;
+
+  & {
+    position: absolute;
+    top: var(--position-top);
+    right: var(--position-right);
+    bottom: var(--position-bottom);
+    left: var(--position-left);
+  }
+
+  //! TODO : & { width: var(--width); height: var(--height); }
+
+  & {
+    background-image: var(--panel-image-source);
+    background-repeat: round;
+    background-size: revert;
+    z-index: 7;
+  }
 }

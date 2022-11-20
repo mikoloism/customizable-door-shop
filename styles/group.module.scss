@@ -1,3 +1,16 @@
 .group {
-  position: absolute;
+  & {
+    --position-top: initial;
+    --position-right: initial;
+    --position-bottom: initial;
+    --position-left: initial;
+  }
+
+  & {
+    position: absolute;
+    top: var(--position-top);
+    right: var(--position-right);
+    bottom: var(--position-bottom);
+    left: var(--position-left);
+  }
 }
