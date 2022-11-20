@@ -11,6 +11,10 @@ export type PositionType = {
     left?: number | string;
 };
 
+export type SizeProperties = 'width' | 'height';
+
 export type PropsWithStyle<T = {}> = T & { style?: CSSProperties };
+
+export type SizeType = { width?: number | string; height?: number | string };
 
 export type PropsWithRef<T = {}> = T & { reference: RefObject<HTMLDivElement> };

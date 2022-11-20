@@ -4,6 +4,8 @@ import {
     PositionType,
     PropsWithPosition,
     PropsWithStyle,
+    SizeProperties,
+    SizeType,
 } from './types';
 
 //@ boundingClientRect
@@ -14,7 +16,8 @@ export function useBoundingClientRect() {
 
     useEffect(() => {
         setBoundingClientRect(ref.current!.getBoundingClientRect());
-        return;
+
+        return () => {};
     }, []);
 
     return {
@@ -36,7 +39,7 @@ const POSITION_PROPERTIES: PositionProperties[] = [
     'left',
 ];
 
-export function withComputedPosition(props: PropsWithPosition<{}>): object {
+export function withComputedPosition(props: PropsWithPosition): object {
     const inlineStyle = {};
 
     POSITION_PROPERTIES.map(mapPositionProperties);
@@ -70,14 +73,14 @@ function computePositionStyle(
 
 //@ size
 
-const SIZE_PROPERTIES = ['width', 'height'];
+const SIZE_PROPERTIES: SizeProperties[] = ['width', 'height'];
 
-export function withComputedSize(props: PropsWithStyle<{}>): object {
+export function withComputedSize(props: PropsWithStyle): object {
     const inlineStyle = {};
 
     SIZE_PROPERTIES.map(mapSizeProperties);
 
-    function mapSizeProperties(property: string) {
+    function mapSizeProperties(property: SizeProperties) {
         Object.assign(inlineStyle, computeSizeStyle(props?.style, property));
     }
 
@@ -85,8 +88,8 @@ export function withComputedSize(props: PropsWithStyle<{}>): object {
 }
 
 function computeSizeStyle(
-    position: PositionType | undefined,
-    property: PositionProperties
+    position: SizeType | undefined,
+    property: SizeProperties
 ) {
     if (position?.[property] !== undefined) {
         if (typeof position?.[property] === 'number')
