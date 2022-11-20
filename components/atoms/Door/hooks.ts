@@ -1,66 +1,103 @@
-import { PropsWithPosition } from './types';
+import { useEffect, useRef, useState } from 'react';
+import {
+    PositionProperties,
+    PositionType,
+    PropsWithPosition,
+    PropsWithStyle,
+} from './types';
 
-const PROPERTIES: Properties[] = ['top', 'bottom', 'left', 'right'];
+//@ boundingClientRect
 
-export function withPositionStyle(props: PropsWithPosition<{}>) {
-    const styleWithPosition = {};
+export function useBoundingClientRect() {
+    const ref = useRef<HTMLDivElement>(null);
+    const [boundingClientRect, setBoundingClientRect] = useState<DOMRect>();
 
-    PROPERTIES.map((property: Properties) => {
-        Object.assign(
-            styleWithPosition,
-            computePositionProperty(props?.position, property)
-        );
-    });
+    useEffect(() => {
+        setBoundingClientRect(ref.current!.getBoundingClientRect());
+        return;
+    }, []);
 
-    return styleWithPosition;
+    return {
+        ref,
+        current: ref.current,
+        boundingClientRect,
+        setBoundingClientRect,
+    };
 }
 
-function computePositionProperty(
-    position: PropsWithPosition<{}>['position'],
-    propertyName: Properties
-) {
-    if (position?.[propertyName] !== undefined) {
-        if (typeof position?.[propertyName] === 'number')
-            return { [propertyName]: `${position[propertyName]}px` };
+//@ end boundingClientRect
 
-        return { [propertyName]: position[propertyName] };
+//@ position
+
+const POSITION_PROPERTIES: PositionProperties[] = [
+    'top',
+    'right',
+    'bottom',
+    'left',
+];
+
+export function withComputedPosition(props: PropsWithPosition<{}>): object {
+    const inlineStyle = {};
+
+    POSITION_PROPERTIES.map(mapPositionProperties);
+
+    function mapPositionProperties(property: PositionProperties) {
+        Object.assign(
+            inlineStyle,
+            computePositionStyle(props?.position, property)
+        );
+    }
+
+    return inlineStyle;
+}
+
+function computePositionStyle(
+    position: PositionType | undefined,
+    property: PositionProperties
+) {
+    if (position?.[property] !== undefined) {
+        if (typeof position?.[property] === 'number')
+            return {
+                [`--position-${property}`]: `${position[property]}px`,
+            };
+
+        return { [`--position-${property}`]: position[property] };
+    }
+
+    return {};
+}
+//@ end position
+
+//@ size
+
+const SIZE_PROPERTIES = ['width', 'height'];
+
+export function withComputedSize(props: PropsWithStyle<{}>): object {
+    const inlineStyle = {};
+
+    SIZE_PROPERTIES.map(mapSizeProperties);
+
+    function mapSizeProperties(property: string) {
+        Object.assign(inlineStyle, computeSizeStyle(props?.style, property));
+    }
+
+    return inlineStyle;
+}
+
+function computeSizeStyle(
+    position: PositionType | undefined,
+    property: PositionProperties
+) {
+    if (position?.[property] !== undefined) {
+        if (typeof position?.[property] === 'number')
+            return {
+                [property]: `${position[property]}px`,
+            };
+
+        return { [property]: position[property] };
     }
 
     return {};
 }
 
-const TWO_COORDINATION_PROPERTIES: TopAndLeft[] = ['top', 'left'];
-export function withPositionVariables(
-    props: PropsWithPosition<{}>,
-    variableName: string
-) {
-    const styleWithPosition = {};
-
-    TWO_COORDINATION_PROPERTIES.map((property: TopAndLeft) => {
-        Object.assign(
-            styleWithPosition,
-            computePositionWithVariable(props?.position, variableName, property)
-        );
-    });
-
-    return styleWithPosition;
-}
-
-function computePositionWithVariable(
-    position: PropsWithPosition<{}>['position'],
-    variableName: string,
-    propertyName: Properties
-) {
-    if (position?.[propertyName] !== undefined) {
-        if (typeof position?.[propertyName] === 'number')
-            return { [`--${variableName}`]: `${position[propertyName]}px` };
-
-        return { [`--${variableName}`]: position[propertyName] };
-    }
-
-    return {};
-}
-
-type Properties = 'top' | 'bottom' | 'left' | 'right';
-type TopAndLeft = 'top' | 'left';
-type PositionTopAndLeft = Omit<Properties, 'right' | 'bottom'>;
+//@ end size
