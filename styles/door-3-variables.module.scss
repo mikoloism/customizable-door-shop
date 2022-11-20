@@ -1,0 +1,21 @@
+.variables {
+  --box-1-height: calc(
+    ((100% - (2 * var(--profile-separator-size))) * 0.333333)
+  );
+  --box-2-height: calc(
+    ((100% - (2 * var(--profile-separator-size))) * 0.333333)
+  );
+  --box-3-height: calc(
+    ((100% - (2 * var(--profile-separator-size))) * 0.333333)
+  );
+
+  --separator-1-top: var(--box-1-height);
+  --separator-2-top: calc(
+    (var(--box-1-height) + var(--box-2-height)) + var(--profile-separator-size)
+  );
+
+  --box-2-top: calc(var(--box-1-height) + var(--profile-separator-size));
+  --box-3-top: calc(
+    var(--box-2-top) + var(--box-2-height) + var(--profile-separator-size)
+  );
+}
