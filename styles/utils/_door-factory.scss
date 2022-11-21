@@ -1,0 +1,67 @@
+@mixin sum($block, $property, $length) {
+  $sum-variable: 'calc(';
+  @for $index from 1 through $length {
+    $sum-variable: '#{$sum-variable} var(--#{$block}-#{$index}-#{$property})';
+
+    @if $index + 1 <= $length {
+      $sum-variable: '#{$sum-variable} +';
+    }
+  }
+  $sum-variable: '#{$sum-variable})';
+
+  --#{$block}-#{$property}-sum: #{unquote($sum-variable)};
+}
+
+@mixin create-panel-variables($length) {
+  @for $index from 1 through $length {
+    --panel-#{$index}-fixed-width: 0px;
+    --panel-#{$index}-fixed-height: 0px;
+    --panel-#{$index}-relative-width: 1;
+    --panel-#{$index}-relative-height: 1;
+  }
+
+  @for $index2 from 1 through $length - 1 {
+    --separator-#{$index2}-width: var(--profile-separator-size);
+    --separator-#{$index2}-height: var(--profile-separator-size);
+  }
+
+  @include sum('panel', 'relative-height', $length);
+  @include sum('panel', 'fixed-height', $length);
+  @include sum('panel', 'relative-width', $length);
+  @include sum('panel', 'fixed-width', $length);
+  @include sum('separator', 'height', $length - 1);
+  @include sum('separator', 'width', $length - 1);
+}
+
+@mixin apply-panel-variables($property, $index) {
+  #{unquote('--panel-#{$index}-#{$property}')}: #{unquote(
+      'calc((((100% - var(--separator-#{$property}-sum) - var(--panel-fixed-#{$property}-sum)) / var(--panel-relative-#{$property}-sum)) * var(--panel-#{$index}-relative-#{$property})) + var(--panel-#{$index}-fixed-#{$property}))'
+    )};
+}
+
+@mixin create-group-variables($length) {
+  @for $index from 1 through $length {
+    --group-#{$index}-fixed-width: 0px;
+    --group-#{$index}-fixed-height: 0px;
+    --group-#{$index}-relative-width: 1;
+    --group-#{$index}-relative-height: 1;
+  }
+
+  @for $index2 from 1 through $length - 1 {
+    --separator-#{$index2}-width: var(--profile-separator-size);
+    --separator-#{$index2}-height: var(--profile-separator-size);
+  }
+
+  @include sum('group', 'relative-height', $length);
+  @include sum('group', 'fixed-height', $length);
+  @include sum('group', 'relative-width', $length);
+  @include sum('group', 'fixed-width', $length);
+  @include sum('separator', 'height', $length - 1);
+  @include sum('separator', 'width', $length - 1);
+}
+
+@mixin apply-group-variables($property, $index) {
+  #{unquote('--group-#{$index}-#{$property}')}: #{unquote(
+      'calc((((100% - var(--separator-#{$property}-sum) - var(--group-fixed-#{$property}-sum)) / var(--group-relative-#{$property}-sum)) * var(--group-#{$index}-relative-#{$property})) + var(--group-#{$index}-fixed-#{$property}))'
+    )};
+}
