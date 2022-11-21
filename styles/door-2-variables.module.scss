@@ -1,0 +1,12 @@
+@import '~/styles/utils/_door-factory.scss';
+
+.variables {
+  --door-width: 500px;
+  --door-height: 800px;
+  @include create-panel-variables(2);
+  @include apply-panel-variables('height', 1);
+  @include apply-panel-variables('height', 2);
+  --panel-1-top: calc(0);
+  --panel-2-top: calc(var(--panel-1-height) + var(--separator-1-height));
+  --separator-1-top: calc(var(--panel-1-height));
+}
