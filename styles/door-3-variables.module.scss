@@ -1,21 +1,18 @@
+@import '~/styles/utils/_door-factory.scss';
+
 .variables {
-  --box-1-height: calc(
-    ((100% - (2 * var(--profile-separator-size))) * 0.333333)
+  @include create-panel-variables(3);
+  @include apply-panel-variables('height', 1);
+  @include apply-panel-variables('height', 2);
+  @include apply-panel-variables('height', 3);
+  --panel-1-top: calc(0);
+  --panel-2-top: calc(var(--panel-1-height) + var(--separator-1-height));
+  --panel-3-top: calc(
+    var(--panel-1-height) + var(--separator-1-height) + var(--panel-2-height) +
+      var(--separator-2-height)
   );
-  --box-2-height: calc(
-    ((100% - (2 * var(--profile-separator-size))) * 0.333333)
-  );
-  --box-3-height: calc(
-    ((100% - (2 * var(--profile-separator-size))) * 0.333333)
-  );
-
-  --separator-1-top: var(--box-1-height);
+  --separator-1-top: calc(var(--panel-1-height));
   --separator-2-top: calc(
-    (var(--box-1-height) + var(--box-2-height)) + var(--profile-separator-size)
-  );
-
-  --box-2-top: calc(var(--box-1-height) + var(--profile-separator-size));
-  --box-3-top: calc(
-    var(--box-2-top) + var(--box-2-height) + var(--profile-separator-size)
+    var(--panel-1-height) + var(--separator-1-height) + var(--panel-2-height)
   );
 }
