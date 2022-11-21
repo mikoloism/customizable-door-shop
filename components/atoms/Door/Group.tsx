@@ -11,9 +11,19 @@ export function Group(props: Props) {
         ...withComputedSize(props),
     };
 
+    if (props?.reference) {
+        return (
+            <div
+                ref={props.reference}
+                className={className}
+                style={inlineStyle}>
+                {props.children}
+            </div>
+        );
+    }
+
     return (
         <div
-            ref={props.reference}
             className={className}
             style={inlineStyle}>
             {props.children}
@@ -21,4 +31,6 @@ export function Group(props: Props) {
     );
 }
 
-type Props = PropsWithRef<PropsWithPosition<PropsWithStyle<PropsWithChildren>>>;
+type Props = PropsWithChildren<
+    PropsWithPosition & PropsWithStyle & PropsWithRef
+>;

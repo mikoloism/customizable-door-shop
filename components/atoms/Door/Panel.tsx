@@ -10,9 +10,17 @@ export function Panel(props: Props) {
         ...withComputedSize(props),
     };
 
+    if (props?.reference) {
+        return (
+            <div
+                ref={props.reference}
+                className={className}
+                style={inlineStyle}></div>
+        );
+    }
+
     return (
         <div
-            ref={props.reference}
             className={className}
             style={inlineStyle}></div>
     );
