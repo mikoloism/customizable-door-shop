@@ -60,10 +60,10 @@ export default function HomePage() {
                     }}>
                     <Panel
                         reference={panel1.ref}
-                        position={{ top: '0' }}
+                        position={{ top: 'var(--panel-1-top)' }}
                         style={{
                             width: '100%',
-                            height: 'var(--box-1-height)',
+                            height: 'var(--panel-1-height)',
                         }}
                     />
 
@@ -75,9 +75,9 @@ export default function HomePage() {
 
                     <Panel
                         reference={panel2.ref}
-                        position={{ top: 'var(--box-2-top)' }}
+                        position={{ top: 'var(--panel-2-top)' }}
                         style={{
-                            height: 'var(--box-2-height)',
+                            height: 'var(--panel-2-height)',
                             width: '100%',
                         }}
                     />
@@ -90,9 +90,9 @@ export default function HomePage() {
 
                     <Panel
                         reference={panel3.ref}
-                        position={{ top: 'var(--box-3-top)' }}
+                        position={{ top: 'var(--panel-3-top)' }}
                         style={{
-                            height: 'var(--box-3-height)',
+                            height: 'var(--panel-3-height)',
                             width: '100%',
                         }}
                     />
