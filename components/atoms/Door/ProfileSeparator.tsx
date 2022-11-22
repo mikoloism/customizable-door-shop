@@ -11,6 +11,7 @@ export function ProfileSeparator(props: Props) {
     const inlineStyle = {
         ...withComputedPosition(props),
         ...withComputedSize(props),
+        zIndex: props?.zIndex ?? '12',
     };
 
     if (props?.reference) {
@@ -30,5 +31,6 @@ export function ProfileSeparator(props: Props) {
 }
 
 export type Props = PropsWithRef<PropsWithPosition & PropsWithStyle> & {
+    zIndex?: number | string;
     axis: 'vertical' | 'horizontal';
 };
