@@ -5,7 +5,7 @@ import { withComputedPosition, withComputedSize } from './hooks';
 import { PropsWithPosition, PropsWithRef, PropsWithStyle } from './types';
 
 export function Group(props: Props) {
-    const className = classnames({ [style[`group`]]: true });
+    const className = classnames({ [style[`group`]]: true }, props.className);
     const inlineStyle = {
         ...withComputedPosition(props),
         ...withComputedSize(props),
@@ -32,5 +32,5 @@ export function Group(props: Props) {
 }
 
 type Props = PropsWithChildren<
-    PropsWithPosition & PropsWithStyle & PropsWithRef
+    PropsWithPosition & PropsWithStyle & PropsWithRef & { className?: string }
 >;
